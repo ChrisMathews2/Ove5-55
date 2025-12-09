@@ -1,0 +1,1750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ageing in Place | Over 55 Work Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      /* Ageing in Place / PCG palette */
+      --aip-deep-blue: #003d7a;
+      --aip-growth-green: #6bcb77;
+      --aip-wisdom-gold: #ffd93d;
+      --aip-sunset-coral: #ff6b35;
+
+      /* Derived theme tokens */
+      --bg: radial-gradient(circle at top, #051021 0, #020617 55%, #000 100%);
+      --bg-elevated: #020617;
+      --bg-soft: #0b1220;
+      --accent: var(--aip-growth-green);
+      --accent-soft: rgba(107, 203, 119, 0.12);
+      --accent-strong: #7ee08c;
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --border-subtle: #1f2937;
+      --danger: #f97373;
+      --success: #4ade80;
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --shadow-soft: 0 20px 55px rgba(3, 7, 18, 0.9);
+      --transition-fast: 0.18s ease-out;
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Inter", "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 1180px;
+      margin: 16px;
+      padding: 20px 22px 22px;
+      border-radius: 24px;
+      background: radial-gradient(circle at top left, #020b1f 0, #020617 60%);
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      backdrop-filter: blur(18px);
+    }
+
+    @media (min-width: 960px) {
+      .app-shell {
+        padding: 24px 26px 26px;
+        margin: 24px;
+      }
+    }
+
+    header.app-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      background: conic-gradient(
+        from 200deg,
+        var(--aip-deep-blue),
+        var(--aip-growth-green),
+        var(--aip-wisdom-gold),
+        var(--aip-sunset-coral),
+        var(--aip-deep-blue)
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 12px 26px rgba(0, 61, 122, 0.6);
+    }
+
+    .brand-inner {
+      width: 78%;
+      height: 78%;
+      border-radius: inherit;
+      border: 2px solid rgba(3, 7, 18, 0.95);
+      background: radial-gradient(circle at top, #e5e7eb 0, #0f172a 60%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+      color: #020617;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand-text h1 {
+      font-size: 18px;
+      margin: 0;
+      letter-spacing: 0.03em;
+    }
+
+    .brand-text p {
+      margin: 0;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .role-switch {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+    }
+
+    .role-switch button {
+      border: none;
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 500;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: background var(--transition-fast), color var(--transition-fast),
+        transform var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .role-switch button span.icon {
+      font-size: 13px;
+      opacity: 0.9;
+    }
+
+    .role-switch button.active {
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      transform: translateY(-1px);
+    }
+
+    .role-switch button:active {
+      transform: translateY(0);
+    }
+
+    .tagline {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tagline span.highlight {
+      color: var(--aip-wisdom-gold);
+      font-weight: 500;
+    }
+
+    main {
+      margin-top: 8px;
+    }
+
+    .view {
+      display: none;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 4fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .panel {
+      background: radial-gradient(circle at top left, #02081a 0, #020617 80%);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(31, 41, 55, 0.96);
+      padding: 16px 16px 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .panel-title {
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-title-pill {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: var(--accent);
+      border: 1px solid rgba(107, 203, 119, 0.6);
+    }
+
+    .panel-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .pill {
+      font-size: 11px;
+      border-radius: 999px;
+      padding: 4px 8px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: var(--text-muted);
+      background: rgba(15, 23, 42, 0.78);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--aip-growth-green);
+    }
+
+    form {
+      display: grid;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    label {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      background: rgba(15, 23, 42, 0.94);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 7px 9px;
+      font-size: 13px;
+      color: var(--text-main);
+      outline: none;
+      transition: border var(--transition-fast), box-shadow var(--transition-fast),
+        background var(--transition-fast);
+      resize: vertical;
+      min-height: 30px;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #6b7280;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--aip-growth-green);
+      box-shadow: 0 0 0 1px rgba(107, 203, 119, 0.4);
+      background: #020617;
+    }
+
+    .field-inline {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .field-inline-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    @media (max-width: 720px) {
+      .field-inline,
+      .field-inline-3 {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .btn {
+      border-radius: 999px;
+      border: none;
+      padding: 7px 13px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast),
+        background var(--transition-fast), color var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--aip-growth-green), var(--aip-sunset-coral));
+      color: #020617;
+      box-shadow: 0 12px 28px rgba(107, 203, 119, 0.45);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 36px rgba(107, 203, 119, 0.5);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 8px 20px rgba(107, 203, 119, 0.45);
+    }
+
+    .btn-secondary {
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: var(--text-muted);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(15, 23, 42, 1);
+      color: var(--text-main);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 0;
+      font-size: 11px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-ghost:hover {
+      color: var(--accent-strong);
+    }
+
+    .form-footer {
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .hint strong {
+      color: var(--accent-strong);
+      font-weight: 500;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 10px;
+      margin-top: 4px;
+      max-height: 360px;
+      overflow: auto;
+      padding-right: 3px;
+    }
+
+    .card {
+      background: rgba(10, 16, 31, 0.96);
+      border-radius: 14px;
+      border: 1px solid rgba(31, 41, 55, 0.96);
+      padding: 10px 10px 9px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) max-content;
+      gap: 8px;
+      align-items: start;
+      transition: border var(--transition-fast), transform var(--transition-fast),
+        box-shadow var(--transition-fast), background var(--transition-fast);
+    }
+
+    .card:hover {
+      border-color: rgba(107, 203, 119, 0.6);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.9);
+      background: radial-gradient(circle at top left, #020617 0, #020617 70%);
+    }
+
+    .card-main-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .card-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+
+    .badge {
+      font-size: 10px;
+      border-radius: 999px;
+      padding: 3px 7px;
+      border: 1px solid rgba(55, 65, 81, 0.8);
+      color: var(--text-muted);
+      background: rgba(15, 23, 42, 0.96);
+      white-space: nowrap;
+    }
+
+    .badge-soft {
+      background: rgba(107, 203, 119, 0.12);
+      border-color: rgba(107, 203, 119, 0.5);
+      color: var(--accent-strong);
+    }
+
+    .card-right {
+      text-align: right;
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: flex-end;
+    }
+
+    .score-pill {
+      font-size: 10px;
+      border-radius: 999px;
+      padding: 3px 7px;
+      background: rgba(34, 197, 94, 0.18);
+      color: var(--success);
+      border: 1px solid rgba(74, 222, 128, 0.6);
+    }
+
+    .score-pill.medium {
+      background: rgba(234, 179, 8, 0.12);
+      color: #facc15;
+      border-color: rgba(250, 204, 21, 0.7);
+    }
+
+    .score-pill.low {
+      background: rgba(248, 113, 113, 0.12);
+      color: var(--danger);
+      border-color: rgba(248, 113, 113, 0.7);
+    }
+
+    .empty-state {
+      font-size: 12px;
+      color: var(--text-muted);
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px dashed rgba(55, 65, 81, 0.9);
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .filters select {
+      font-size: 11px;
+      padding: 4px 7px;
+      border-radius: 999px;
+    }
+
+    .pill-mini {
+      font-size: 10px;
+      border-radius: 999px;
+      padding: 3px 7px;
+      border: 1px solid rgba(55, 65, 81, 0.8);
+      color: var(--text-muted);
+      background: rgba(15, 23, 42, 0.96);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .pill-mini span.dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--aip-growth-green);
+    }
+
+    .footer-note {
+      margin-top: 12px;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: right;
+    }
+
+    /* Insights / Analytics section */
+    .insights-section {
+      margin-top: 18px;
+    }
+
+    .insights-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .insights-title {
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .insights-title span.icon {
+      font-size: 14px;
+    }
+
+    .insights-kpi-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .kpi-pill {
+      border-radius: 999px;
+      padding: 4px 8px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.96);
+      display: inline-flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+
+    .kpi-pill span.value {
+      color: var(--aip-wisdom-gold);
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    .kpi-pill span.label {
+      opacity: 0.8;
+    }
+
+    .local-board-list {
+      margin-top: 4px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .local-board-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 0;
+      border-bottom: 1px dashed rgba(55, 65, 81, 0.7);
+    }
+
+    .local-board-item:last-child {
+      border-bottom: none;
+    }
+
+    .local-board-name {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .local-board-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--aip-sunset-coral);
+    }
+
+    .local-board-metrics {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-logo">
+          <div class="brand-inner">AIP</div>
+        </div>
+        <div class="brand-text">
+          <h1>Ageing in Place | Over 55 Work Hub</h1>
+          <p>Keeping experience in the workforce, on terms that fit real lives.</p>
+        </div>
+      </div>
+
+      <div class="role-switch" aria-label="Switch between worker and employer view">
+        <button type="button" class="active" data-role="worker" id="workerTabBtn">
+          <span class="icon">👤</span>
+          Older Worker
+        </button>
+        <button type="button" data-role="employer" id="employerTabBtn">
+          <span class="icon">🏢</span>
+          Employer / Partner
+        </button>
+      </div>
+    </header>
+
+    <p class="tagline">
+      <span>Start with a simple profile or role description – the hub does the matching.</span>
+      <span class="highlight">Part of the wider Ageing in Place ecosystem.</span>
+    </p>
+
+    <main>
+      <!-- Worker View -->
+      <section class="view active" id="workerView" aria-label="Older worker view">
+        <div class="grid">
+          <!-- Worker profile panel -->
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <div class="panel-title">
+                  <div class="panel-title-pill">1</div>
+                  Your profile
+                </div>
+                <div class="panel-subtitle">
+                  A simple snapshot is enough to find good matches.
+                </div>
+              </div>
+              <div class="pill">
+                <span class="pill-dot"></span>
+                Saved locally on this device
+              </div>
+            </div>
+
+            <form id="workerProfileForm">
+              <div class="field-group">
+                <label for="wpName">Name (optional)</label>
+                <input
+                  type="text"
+                  id="wpName"
+                  name="name"
+                  placeholder="e.g. Moana, Peter, Sione"
+                />
+              </div>
+
+              <div class="field-group">
+                <label for="wpSkills">What are your main skills or experience?</label>
+                <textarea
+                  id="wpSkills"
+                  name="skills"
+                  rows="2"
+                  placeholder="e.g. administration, customer service, caregiving, driving..."
+                ></textarea>
+              </div>
+
+              <div class="field-inline">
+                <div class="field-group">
+                  <label for="wpLocation">Preferred location / area</label>
+                  <input
+                    type="text"
+                    id="wpLocation"
+                    name="location"
+                    placeholder="e.g. North Shore, CBD, online"
+                  />
+                </div>
+                <div class="field-group">
+                  <label for="wpAvailability">Hours per week you’d like</label>
+                  <select id="wpAvailability" name="hours">
+                    <option value="">Any</option>
+                    <option value="under15">Up to 15 hours</option>
+                    <option value="16-25">16–25 hours</option>
+                    <option value="26-35">26–35 hours</option>
+                    <option value="36+">36+ hours</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="field-inline-3">
+                <div class="field-group">
+                  <label for="wpWorkType">Work type</label>
+                  <select id="wpWorkType" name="workType">
+                    <option value="">Any</option>
+                    <option value="part-time">Part-time</option>
+                    <option value="full-time">Full-time</option>
+                    <option value="contract">Contract / project</option>
+                    <option value="casual">Casual / seasonal</option>
+                  </select>
+                </div>
+                <div class="field-group">
+                  <label for="wpPhysical">Physical load you’re comfortable with</label>
+                  <select id="wpPhysical" name="physical">
+                    <option value="">Any</option>
+                    <option value="light">Light / mostly seated</option>
+                    <option value="moderate">Moderate (on feet, some lifting)</option>
+                    <option value="active">Active / on the move</option>
+                  </select>
+                </div>
+                <div class="field-group">
+                  <label for="wpRemote">Remote / from home options</label>
+                  <select id="wpRemote" name="remote">
+                    <option value="">Open to anything</option>
+                    <option value="remote-only">Remote / from home only</option>
+                    <option value="hybrid">Hybrid (some office, some home)</option>
+                    <option value="on-site">On site only</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-footer">
+                <button type="submit" class="btn btn-primary">
+                  <span>Update matches</span>
+                </button>
+                <button type="button" class="btn-ghost" id="resetWorkerProfileBtn">
+                  <span>Reset profile</span> <span>↺</span>
+                </button>
+                <div class="hint">
+                  We suggest matches based on your <strong>skills</strong>,
+                  <strong>location</strong>, and <strong>comfort level</strong>.
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Worker matches panel -->
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <div class="panel-title">
+                  <div class="panel-title-pill">2</div>
+                  Recommended roles
+                </div>
+                <div class="panel-subtitle">
+                  Roles that align with your skills and preferences.
+                </div>
+              </div>
+            </div>
+
+            <div class="toolbar">
+              <div class="filters">
+                <span class="pill-mini">
+                  <span class="dot"></span>
+                  Live demo data
+                </span>
+                <select id="filterMatchLocation">
+                  <option value="">Any location</option>
+                  <option value="Auckland">Auckland</option>
+                  <option value="North Shore">North Shore</option>
+                  <option value="South Auckland">South Auckland</option>
+                  <option value="Remote">Remote / Online</option>
+                </select>
+                <select id="filterMatchType">
+                  <option value="">All types</option>
+                  <option value="part-time">Part-time</option>
+                  <option value="full-time">Full-time</option>
+                  <option value="contract">Contract</option>
+                  <option value="casual">Casual</option>
+                </select>
+              </div>
+              <button type="button" class="btn-secondary" id="refreshMatchesBtn">
+                🔄 Refresh matches
+              </button>
+            </div>
+
+            <div id="workerMatches" class="cards"></div>
+            <div id="workerMatchesEmpty" class="empty-state" style="display: none;">
+              No roles match your current filters. Try widening your location or work-type
+              preferences.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Employer / Partner View -->
+      <section class="view" id="employerView" aria-label="Employer and partner view">
+        <div class="grid">
+          <!-- Employer create role panel -->
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <div class="panel-title">
+                  <div class="panel-title-pill">1</div>
+                  Describe the role
+                </div>
+                <div class="panel-subtitle">
+                  We’ll suggest older workers whose skills and preferences fit.
+                </div>
+              </div>
+              <div class="pill">
+                🧩 Age-friendly hints built in
+              </div>
+            </div>
+
+            <form id="employerRoleForm">
+              <div class="field-group">
+                <label for="erTitle">Role title</label>
+                <input
+                  type="text"
+                  id="erTitle"
+                  name="title"
+                  placeholder="e.g. Part-time customer care, Library assistant"
+                  required
+                />
+              </div>
+
+              <div class="field-inline">
+                <div class="field-group">
+                  <label for="erLocation">Location / area</label>
+                  <input
+                    type="text"
+                    id="erLocation"
+                    name="location"
+                    placeholder="e.g. CBD, North Shore, Remote"
+                  />
+                </div>
+                <div class="field-group">
+                  <label for="erWorkType">Work type</label>
+                  <select id="erWorkType" name="workType">
+                    <option value="part-time">Part-time</option>
+                    <option value="full-time">Full-time</option>
+                    <option value="contract">Contract / project</option>
+                    <option value="casual">Casual / seasonal</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="field-inline-3">
+                <div class="field-group">
+                  <label for="erHours">Approx hours per week</label>
+                  <input
+                    type="number"
+                    id="erHours"
+                    name="hours"
+                    min="1"
+                    max="60"
+                    placeholder="e.g. 20"
+                  />
+                </div>
+                <div class="field-group">
+                  <label for="erPhysical">Physical load</label>
+                  <select id="erPhysical" name="physical">
+                    <option value="light">Light / mostly seated</option>
+                    <option value="moderate">Moderate</option>
+                    <option value="active">Active</option>
+                  </select>
+                </div>
+                <div class="field-group">
+                  <label for="erRemote">Remote / flexible</label>
+                  <select id="erRemote" name="remote">
+                    <option value="">Any</option>
+                    <option value="remote-only">Remote only</option>
+                    <option value="hybrid">Hybrid</option>
+                    <option value="on-site">On site</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="erSkills">
+                  Key tasks or skills (short, clear phrases work best)
+                </label>
+                <textarea
+                  id="erSkills"
+                  name="skills"
+                  rows="2"
+                  placeholder="e.g. friendly phone manner, basic computer use, light organising, patience..."
+                ></textarea>
+              </div>
+
+              <div class="form-footer">
+                <button type="submit" class="btn btn-primary">
+                  <span>See suggested candidates</span>
+                </button>
+                <button type="button" class="btn-ghost" id="resetEmployerRoleBtn">
+                  <span>Clear form</span> <span>↺</span>
+                </button>
+                <div class="hint">
+                  The more specific you are with tasks and hours, the better the match.
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Employer candidates panel -->
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <div class="panel-title">
+                  <div class="panel-title-pill">2</div>
+                  Suggested older worker candidates
+                </div>
+                <div class="panel-subtitle">
+                  Based on role type, hours, location, and skills.
+                </div>
+              </div>
+              <div class="pill">
+                👥 Demo pool of candidates
+              </div>
+            </div>
+
+            <div class="toolbar">
+              <div class="filters">
+                <span class="pill-mini">
+                  <span class="dot"></span>
+                  Matching by skills &amp; availability
+                </span>
+              </div>
+              <button type="button" class="btn-secondary" id="refreshCandidatesBtn">
+                🔁 Refresh list
+              </button>
+            </div>
+
+            <div id="employerCandidates" class="cards"></div>
+            <div id="employerCandidatesEmpty" class="empty-state" style="display: none;">
+              No demo candidates match this role yet. Try adjusting hours, physical load,
+              or skills.
+            </div>
+          </div>
+        </div>
+
+        <!-- Insights section for MSD & Local Board Hubs -->
+        <section class="insights-section" aria-label="MSD analytics and local board view">
+          <div class="insights-header">
+            <div class="insights-title">
+              <span class="icon">📊</span>
+              MSD & Local Board Insights (demo)
+            </div>
+            <div class="insights-kpi-row">
+              <div class="kpi-pill">
+                <span class="value" id="kpiTotalWorkers">0</span>
+                <span class="label">demo older workers</span>
+              </div>
+              <div class="kpi-pill">
+                <span class="value" id="kpiTotalEmployers">0</span>
+                <span class="label">demo employers</span>
+              </div>
+              <div class="kpi-pill">
+                <span class="value" id="kpiAvgMatchScore">0%</span>
+                <span class="label">avg match score</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid">
+            <!-- MSD analytics panel -->
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <div class="panel-title">
+                    <div class="panel-title-pill">3</div>
+                    MSD analytics snapshot
+                  </div>
+                  <div class="panel-subtitle">
+                    High-level indicators from the demo roles and candidates.
+                  </div>
+                </div>
+              </div>
+              <div class="local-board-list">
+                <div class="local-board-item">
+                  <div class="local-board-name">
+                    <div class="local-board-dot" style="background: var(--aip-growth-green);"></div>
+                    Total demo roles
+                  </div>
+                  <div class="local-board-metrics">
+                    <span id="msdTotalRoles">0</span> roles •
+                    <span id="msdPartTimeRoles">0</span> part-time
+                  </div>
+                </div>
+                <div class="local-board-item">
+                  <div class="local-board-name">
+                    <div class="local-board-dot" style="background: var(--aip-sunset-coral);"></div>
+                    Total demo candidates
+                  </div>
+                  <div class="local-board-metrics">
+                    <span id="msdTotalCandidates">0</span> people •
+                    <span id="msdLightPhysical">0</span> light-load
+                  </div>
+                </div>
+                <div class="local-board-item">
+                  <div class="local-board-name">
+                    <div class="local-board-dot" style="background: var(--aip-wisdom-gold);"></div>
+                    Remote-friendly opportunities
+                  </div>
+                  <div class="local-board-metrics">
+                    <span id="msdRemoteRoles">0</span> roles •
+                    <span id="msdRemotePrefs">0</span> remote-pref candidates
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Local board hub panel -->
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <div class="panel-title">
+                    <div class="panel-title-pill">4</div>
+                    Local Board hub view
+                  </div>
+                  <div class="panel-subtitle">
+                    Demo distribution of roles by broad local area.
+                  </div>
+                </div>
+              </div>
+
+              <div class="local-board-list" id="localBoardList">
+                <!-- Filled by JS -->
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <div class="footer-note">
+      Prototype only – data here is local and for demonstration. Back-end matching, Ageing in Place
+      identity, and full analytics would plug in behind this interface.
+    </div>
+  </div>
+
+  <script>
+    // ---------------------------
+    // Simple demo data & helpers
+    // ---------------------------
+
+    const demoRoles = [
+      {
+        id: 1,
+        title: "Library assistant (part-time)",
+        employer: "City Library Service",
+        location: "North Shore",
+        workType: "part-time",
+        physical: "light",
+        remote: "on-site",
+        skills: ["customer service", "cataloguing", "basic computer use"],
+        hoursRange: "16–20 hours",
+      },
+      {
+        id: 2,
+        title: "Community centre host",
+        employer: "Local Community Trust",
+        location: "South Auckland",
+        workType: "part-time",
+        physical: "moderate",
+        remote: "on-site",
+        skills: ["welcoming people", "coordinating activities", "light organising"],
+        hoursRange: "10–15 hours",
+      },
+      {
+        id: 3,
+        title: "Customer care (remote)",
+        employer: "Online Retail Cooperative",
+        location: "Remote",
+        workType: "part-time",
+        physical: "light",
+        remote: "remote-only",
+        skills: ["phone support", "email support", "basic computer use"],
+        hoursRange: "18–24 hours",
+      },
+      {
+        id: 4,
+        title: "Mentor – apprentice carpenters",
+        employer: "BuildRight Apprenticeships",
+        location: "Auckland",
+        workType: "contract",
+        physical: "moderate",
+        remote: "on-site",
+        skills: ["mentoring", "carpentry", "on-site coaching"],
+        hoursRange: "Flexible, 8–20 hours",
+      },
+      {
+        id: 5,
+        title: "Reception & front desk (medical)",
+        employer: "Kauri Medical Practice",
+        location: "Auckland",
+        workType: "part-time",
+        physical: "light",
+        remote: "on-site",
+        skills: ["reception", "patient care", "appointment booking"],
+        hoursRange: "20–25 hours",
+      },
+      {
+        id: 6,
+        title: "Seasonal events assistant",
+        employer: "City Events Team",
+        location: "Auckland",
+        workType: "casual",
+        physical: "active",
+        remote: "on-site",
+        skills: ["customer service", "event setup", "problem solving"],
+        hoursRange: "As events scheduled",
+      },
+    ];
+
+    const demoCandidates = [
+      {
+        id: "C1",
+        name: "Moana",
+        age: 62,
+        location: "North Shore",
+        hoursPreference: "16–24 hours",
+        workTypePreference: ["part-time"],
+        physical: "light",
+        remotePreference: "hybrid",
+        skills: [
+          "customer service",
+          "reception",
+          "basic computer use",
+          "patient care",
+        ],
+        recentExperience: "15 years in medical reception & customer care.",
+      },
+      {
+        id: "C2",
+        name: "Peter",
+        age: 67,
+        location: "Auckland",
+        hoursPreference: "8–20 hours",
+        workTypePreference: ["part-time", "contract"],
+        physical: "moderate",
+        remotePreference: "on-site",
+        skills: ["mentoring", "carpentry", "site supervision"],
+        recentExperience: "40 years in building and construction, now mentoring.",
+      },
+      {
+        id: "C3",
+        name: "Anita",
+        age: 58,
+        location: "Remote",
+        hoursPreference: "20–30 hours",
+        workTypePreference: ["part-time", "full-time"],
+        physical: "light",
+        remotePreference: "remote-only",
+        skills: ["phone support", "email support", "digital admin"],
+        recentExperience:
+          "Contact centre lead for a national retail chain, now semi-retired.",
+      },
+      {
+        id: "C4",
+        name: "Hemi",
+        age: 60,
+        location: "South Auckland",
+        hoursPreference: "10–18 hours",
+        workTypePreference: ["casual", "part-time"],
+        physical: "active",
+        remotePreference: "on-site",
+        skills: ["event setup", "crowd support", "problem solving"],
+        recentExperience:
+          "Support staff at sports events and local festivals for 10+ years.",
+      },
+      {
+        id: "C5",
+        name: "Sue",
+        age: 64,
+        location: "Auckland",
+        hoursPreference: "20–25 hours",
+        workTypePreference: ["part-time"],
+        physical: "light",
+        remotePreference: "hybrid",
+        skills: ["appointment booking", "invoicing", "light admin"],
+        recentExperience:
+          "Practice manager in small physio clinic, strong admin background.",
+      },
+    ];
+
+    function normalise(str) {
+      return (str || "").toString().toLowerCase();
+    }
+
+    // ---------------------------
+    // Role switching
+    // ---------------------------
+
+    const workerTabBtn = document.getElementById("workerTabBtn");
+    const employerTabBtn = document.getElementById("employerTabBtn");
+    const workerView = document.getElementById("workerView");
+    const employerView = document.getElementById("employerView");
+
+    function setRole(role) {
+      if (role === "worker") {
+        workerView.classList.add("active");
+        employerView.classList.remove("active");
+        workerTabBtn.classList.add("active");
+        employerTabBtn.classList.remove("active");
+      } else {
+        employerView.classList.add("active");
+        workerView.classList.remove("active");
+        employerTabBtn.classList.add("active");
+        workerTabBtn.classList.remove("active");
+      }
+    }
+
+    workerTabBtn.addEventListener("click", () => setRole("worker"));
+    employerTabBtn.addEventListener("click", () => setRole("employer"));
+
+    // ---------------------------
+    // Worker profile & matches
+    // ---------------------------
+
+    const workerProfileForm = document.getElementById("workerProfileForm");
+    const resetWorkerProfileBtn = document.getElementById("resetWorkerProfileBtn");
+    const workerMatchesContainer = document.getElementById("workerMatches");
+    const workerMatchesEmpty = document.getElementById("workerMatchesEmpty");
+    const filterMatchLocation = document.getElementById("filterMatchLocation");
+    const filterMatchType = document.getElementById("filterMatchType");
+    const refreshMatchesBtn = document.getElementById("refreshMatchesBtn");
+
+    const workerProfileFields = {
+      name: document.getElementById("wpName"),
+      skills: document.getElementById("wpSkills"),
+      location: document.getElementById("wpLocation"),
+      hours: document.getElementById("wpAvailability"),
+      workType: document.getElementById("wpWorkType"),
+      physical: document.getElementById("wpPhysical"),
+      remote: document.getElementById("wpRemote"),
+    };
+
+    const WORKER_PROFILE_KEY = "olderWorkersDemoProfile";
+
+    function saveWorkerProfileToStorage(profile) {
+      try {
+        localStorage.setItem(WORKER_PROFILE_KEY, JSON.stringify(profile));
+      } catch {
+        // ignore
+      }
+    }
+
+    function loadWorkerProfileFromStorage() {
+      try {
+        const raw = localStorage.getItem(WORKER_PROFILE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch {
+        return null;
+      }
+    }
+
+    function getWorkerProfileFromForm() {
+      return {
+        name: workerProfileFields.name.value.trim(),
+        skills: workerProfileFields.skills.value.trim(),
+        location: workerProfileFields.location.value.trim(),
+        hours: workerProfileFields.hours.value,
+        workType: workerProfileFields.workType.value,
+        physical: workerProfileFields.physical.value,
+        remote: workerProfileFields.remote.value,
+      };
+    }
+
+    function populateWorkerProfileForm(profile) {
+      if (!profile) return;
+      workerProfileFields.name.value = profile.name || "";
+      workerProfileFields.skills.value = profile.skills || "";
+      workerProfileFields.location.value = profile.location || "";
+      workerProfileFields.hours.value = profile.hours || "";
+      workerProfileFields.workType.value = profile.workType || "";
+      workerProfileFields.physical.value = profile.physical || "";
+      workerProfileFields.remote.value = profile.remote || "";
+    }
+
+    function computeRoleMatchScore(role, profile) {
+      // Basic scoring: location, skills overlap, workType, physical, remote
+      let score = 0;
+
+      const profileSkills = normalise(profile.skills)
+        .split(/[,/;]+|\s{2,}/)
+        .join(" ")
+        .trim();
+
+      const profileLocation = normalise(profile.location);
+      const profileWorkType = profile.workType;
+      const profilePhysical = profile.physical;
+      const profileRemote = profile.remote;
+
+      if (
+        profileLocation &&
+        (normalise(role.location).includes(profileLocation) ||
+          profileLocation.includes(normalise(role.location)))
+      ) {
+        score += 25;
+      } else if (!profileLocation) {
+        score += 10;
+      }
+
+      if (profileWorkType && role.workType === profileWorkType) {
+        score += 20;
+      } else if (!profileWorkType) {
+        score += 8;
+      }
+
+      if (profilePhysical && role.physical === profilePhysical) {
+        score += 15;
+      } else if (!profilePhysical) {
+        score += 5;
+      }
+
+      if (profileRemote && role.remote === profileRemote) {
+        score += 15;
+      } else if (!profileRemote) {
+        score += 5;
+      }
+
+      if (profileSkills) {
+        const skillHits = role.skills.filter((s) =>
+          profileSkills.includes(normalise(s))
+        );
+        score += Math.min(skillHits.length * 10, 30);
+      } else {
+        score += 8; // no skills specified, still show something
+      }
+
+      // clamp
+      if (score > 100) score = 100;
+      if (score < 0) score = 0;
+      return score;
+    }
+
+    function scoreToLabel(score) {
+      if (score >= 70) return { label: "Strong match", className: "" };
+      if (score >= 40) return { label: "Good baseline match", className: "medium" };
+      return { label: "Possible match", className: "low" };
+    }
+
+    function renderWorkerMatches() {
+      const profile = getWorkerProfileFromForm();
+      const selectedLocation = filterMatchLocation.value;
+      const selectedType = filterMatchType.value;
+
+      const enrichedRoles = demoRoles
+        .map((role) => ({
+          ...role,
+          score: computeRoleMatchScore(role, profile),
+        }))
+        .filter((role) => {
+          if (selectedLocation) {
+            const normLoc = normalise(selectedLocation);
+            if (
+              !normalise(role.location).includes(normLoc) &&
+              !normLoc.includes(normalise(role.location))
+            ) {
+              return false;
+            }
+          }
+          if (selectedType && role.workType !== selectedType) return false;
+          return true;
+        })
+        .sort((a, b) => b.score - a.score);
+
+      workerMatchesContainer.innerHTML = "";
+
+      if (!enrichedRoles.length) {
+        workerMatchesEmpty.style.display = "block";
+        return;
+      }
+
+      workerMatchesEmpty.style.display = "none";
+
+      enrichedRoles.forEach((role) => {
+        const scoreMeta = scoreToLabel(role.score);
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <div>
+            <div class="card-main-title">${role.title}</div>
+            <div class="card-sub">${role.employer} • ${role.location}</div>
+            <div class="badge-row">
+              <span class="badge">${role.workType.replace("-", " ")} • ${
+          role.hoursRange
+        }</span>
+              <span class="badge">Physical: ${role.physical}</span>
+              <span class="badge">Remote: ${role.remote}</span>
+            </div>
+            <div class="badge-row">
+              ${role.skills
+                .map(
+                  (skill) => `<span class="badge badge-soft">${skill}</span>`
+                )
+                .join("")}
+            </div>
+          </div>
+          <div class="card-right">
+            <div class="score-pill ${scoreMeta.className}">
+              ${scoreMeta.label} • ${role.score}%
+            </div>
+            <button class="btn-ghost" type="button">
+              View details
+            </button>
+          </div>
+        `;
+        workerMatchesContainer.appendChild(card);
+      });
+    }
+
+    workerProfileForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const profile = getWorkerProfileFromForm();
+      saveWorkerProfileToStorage(profile);
+      renderWorkerMatches();
+    });
+
+    resetWorkerProfileBtn.addEventListener("click", () => {
+      workerProfileForm.reset();
+      saveWorkerProfileToStorage(getWorkerProfileFromForm());
+      renderWorkerMatches();
+    });
+
+    filterMatchLocation.addEventListener("change", renderWorkerMatches);
+    filterMatchType.addEventListener("change", renderWorkerMatches);
+    refreshMatchesBtn.addEventListener("click", renderWorkerMatches);
+
+    // ---------------------------
+    // Employer role & candidates
+    // ---------------------------
+
+    const employerRoleForm = document.getElementById("employerRoleForm");
+    const resetEmployerRoleBtn = document.getElementById("resetEmployerRoleBtn");
+    const employerCandidatesContainer = document.getElementById(
+      "employerCandidates"
+    );
+    const employerCandidatesEmpty = document.getElementById(
+      "employerCandidatesEmpty"
+    );
+    const refreshCandidatesBtn = document.getElementById("refreshCandidatesBtn");
+
+    function getEmployerRoleFromForm() {
+      const skills = document.getElementById("erSkills").value.trim();
+      return {
+        title: document.getElementById("erTitle").value.trim(),
+        location: document.getElementById("erLocation").value.trim(),
+        workType: document.getElementById("erWorkType").value,
+        hours: document.getElementById("erHours").value,
+        physical: document.getElementById("erPhysical").value,
+        remote: document.getElementById("erRemote").value,
+        skills,
+      };
+    }
+
+    function computeCandidateMatchScore(candidate, role) {
+      let score = 0;
+
+      // Work type alignment
+      if (
+        candidate.workTypePreference &&
+        candidate.workTypePreference.includes(role.workType)
+      ) {
+        score += 20;
+      }
+
+      // Location / remote
+      const candidateLocation = normalise(candidate.location);
+      const roleLocation = normalise(role.location);
+      if (roleLocation) {
+        if (
+          candidateLocation.includes(roleLocation) ||
+          roleLocation.includes(candidateLocation)
+        ) {
+          score += 20;
+        }
+      } else {
+        score += 8;
+      }
+
+      if (role.remote && candidate.remotePreference === role.remote) {
+        score += 15;
+      }
+
+      // Physical load
+      if (role.physical && candidate.physical === role.physical) {
+        score += 15;
+      }
+
+      // Skills
+      const roleSkills = normalise(role.skills)
+        .split(/[,/;]+|\s{2,}/)
+        .filter(Boolean);
+      if (roleSkills.length) {
+        const candidateSkillsNorm = candidate.skills.map((s) => normalise(s));
+        const hits = roleSkills.filter((rs) =>
+          candidateSkillsNorm.some((cs) => cs.includes(rs) || rs.includes(cs))
+        );
+        score += Math.min(hits.length * 12, 30);
+      } else {
+        score += 8;
+      }
+
+      if (score > 100) score = 100;
+      if (score < 0) score = 0;
+      return score;
+    }
+
+    function renderEmployerCandidates() {
+      const role = getEmployerRoleFromForm();
+      const enrichedCandidates = demoCandidates
+        .map((candidate) => ({
+          ...candidate,
+          score: computeCandidateMatchScore(candidate, role),
+        }))
+        .filter((candidate) => candidate.score > 0)
+        .sort((a, b) => b.score - a.score);
+
+      employerCandidatesContainer.innerHTML = "";
+
+      if (!enrichedCandidates.length) {
+        employerCandidatesEmpty.style.display = "block";
+        return;
+      }
+
+      employerCandidatesEmpty.style.display = "none";
+
+      enrichedCandidates.forEach((c) => {
+        const scoreMeta = scoreToLabel(c.score);
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <div>
+            <div class="card-main-title">${c.name}, ${c.age}</div>
+            <div class="card-sub">${c.location} • Prefers ${c.hoursPreference}</div>
+            <div class="badge-row">
+              <span class="badge">Prefers: ${c.workTypePreference.join(
+                ", "
+              )}</span>
+              <span class="badge">Physical: ${c.physical}</span>
+              <span class="badge">Remote: ${c.remotePreference}</span>
+            </div>
+            <div class="badge-row">
+              ${c.skills
+                .map(
+                  (skill) => `<span class="badge badge-soft">${skill}</span>`
+                )
+                .join("")}
+            </div>
+            <div class="card-sub">${c.recentExperience}</div>
+          </div>
+          <div class="card-right">
+            <div class="score-pill ${scoreMeta.className}">
+              ${scoreMeta.label} • ${c.score}%
+            </div>
+            <button class="btn-ghost" type="button">
+              Shortlist
+            </button>
+          </div>
+        `;
+        employerCandidatesContainer.appendChild(card);
+      });
+    }
+
+    employerRoleForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      renderEmployerCandidates();
+      computeAndRenderInsights(); // refresh analytics after changing role
+    });
+
+    resetEmployerRoleBtn.addEventListener("click", () => {
+      employerRoleForm.reset();
+      employerCandidatesContainer.innerHTML = "";
+      employerCandidatesEmpty.style.display = "block";
+      computeAndRenderInsights();
+    });
+
+    refreshCandidatesBtn.addEventListener("click", () => {
+      renderEmployerCandidates();
+      computeAndRenderInsights();
+    });
+
+    // ---------------------------
+    // Insights: MSD & Local Board
+    // ---------------------------
+
+    const kpiTotalWorkersEl = document.getElementById("kpiTotalWorkers");
+    const kpiTotalEmployersEl = document.getElementById("kpiTotalEmployers");
+    const kpiAvgMatchScoreEl = document.getElementById("kpiAvgMatchScore");
+
+    const msdTotalRolesEl = document.getElementById("msdTotalRoles");
+    const msdPartTimeRolesEl = document.getElementById("msdPartTimeRoles");
+    const msdTotalCandidatesEl = document.getElementById("msdTotalCandidates");
+    const msdLightPhysicalEl = document.getElementById("msdLightPhysical");
+    const msdRemoteRolesEl = document.getElementById("msdRemoteRoles");
+    const msdRemotePrefsEl = document.getElementById("msdRemotePrefs");
+    const localBoardListEl = document.getElementById("localBoardList");
+
+    function computeAndRenderInsights() {
+      // Workers & employers (demo)
+      const totalWorkers = demoCandidates.length;
+      const uniqueEmployers = [...new Set(demoRoles.map((r) => r.employer))].length;
+
+      // Simple average match score across demo roles vs first candidate profile (proxy)
+      const sampleProfile = getWorkerProfileFromForm();
+      const roleScores = demoRoles.map((r) =>
+        computeRoleMatchScore(r, sampleProfile)
+      );
+      const avgScore =
+        roleScores.length > 0
+          ? Math.round(
+              roleScores.reduce((sum, val) => sum + val, 0) / roleScores.length
+            )
+          : 0;
+
+      kpiTotalWorkersEl.textContent = totalWorkers;
+      kpiTotalEmployersEl.textContent = uniqueEmployers;
+      kpiAvgMatchScoreEl.textContent = avgScore + "%";
+
+      // MSD-specific metrics
+      const totalRoles = demoRoles.length;
+      const partTimeRoles = demoRoles.filter((r) => r.workType === "part-time").length;
+      const totalCandidates = demoCandidates.length;
+      const lightPhysicalCandidates = demoCandidates.filter(
+        (c) => c.physical === "light"
+      ).length;
+      const remoteRoles = demoRoles.filter((r) => r.remote === "remote-only").length;
+      const remotePrefCandidates = demoCandidates.filter(
+        (c) => c.remotePreference === "remote-only"
+      ).length;
+
+      msdTotalRolesEl.textContent = totalRoles;
+      msdPartTimeRolesEl.textContent = partTimeRoles;
+      msdTotalCandidatesEl.textContent = totalCandidates;
+      msdLightPhysicalEl.textContent = lightPhysicalCandidates;
+      msdRemoteRolesEl.textContent = remoteRoles;
+      msdRemotePrefsEl.textContent = remotePrefCandidates;
+
+      // Local board hub-style breakdown: group by broad location
+      const areas = ["North Shore", "South Auckland", "Auckland", "Remote"];
+      const areaStats = areas.map((area) => {
+        const roles = demoRoles.filter((r) =>
+          normalise(r.location).includes(normalise(area))
+        );
+        const candidates = demoCandidates.filter((c) =>
+          normalise(c.location).includes(normalise(area))
+        );
+        return {
+          area,
+          rolesCount: roles.length,
+          candidatesCount: candidates.length,
+        };
+      });
+
+      localBoardListEl.innerHTML = "";
+      areaStats.forEach((stat) => {
+        const item = document.createElement("div");
+        item.className = "local-board-item";
+        item.innerHTML = `
+          <div class="local-board-name">
+            <div class="local-board-dot"></div>
+            ${stat.area}
+          </div>
+          <div class="local-board-metrics">
+            ${stat.rolesCount} roles • ${stat.candidatesCount} candidates
+          </div>
+        `;
+        localBoardListEl.appendChild(item);
+      });
+    }
+
+    // ---------------------------
+    // Initialise on load
+    // ---------------------------
+
+    function init() {
+      const savedProfile = loadWorkerProfileFromStorage();
+      if (savedProfile) {
+        populateWorkerProfileForm(savedProfile);
+      }
+      renderWorkerMatches();
+      renderEmployerCandidates();
+      computeAndRenderInsights();
+    }
+
+    document.addEventListener("DOMContentLoaded", init);
+  </script>
+</body>
+</html>
